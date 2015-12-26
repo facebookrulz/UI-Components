@@ -2,299 +2,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <body>
-<style>
-	#parent .popup {
-	  display: none;
-	}
-
-	#parent:hover .popup {
-	  display: block;
-	}
-	
-	#popup {
-	  display: none;
-	}
-
-	#popup {
-	  display: block;
-	}
-	
-	
-    .bar {
-    fill: lawngreen;
-    }
-    .bar1 {
-    fill: mediumslateblue;
-    }
-
-    .axis text {
-    font: 10px sans-serif;
-    }
-
-    .axis path,
-    .axis line {
-    fill: none;
-    stroke: #000;
-	
-    shape-rendering: crispEdges;
-    }
-
-    .x.axis path {
-    display: none;
-    }
-
-    @keyframes blinker {
-    50% { opacity: 0.0; }
-    }
-
-	.circle{
-		opacity:0.5;
-	}
-    .textarea {
-    color: #000;
-    
-    padding: 15px 20px;
-    height: 40px;
-    width: 100px;
-    font-family: 'OpenSansBold', sans-serif;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-radius: 2px;
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: inset 0 0 0 0 #C14800;
-    /*animation: blinker 1s linear infinite;*/
-    }
-	
-
-
-    /* MASTER OF PUPPETS */
-
-    * {
-    margin:0;
-    padding:0;
-    }
-    html, body {
-    height:100%;
-    background: #FFF;
-    }
-
-    div {
-    text-align: left;
-    position: relative;
-    top: 5%;
-    /*padding: 20px;*/
-    /*min-width: 820px;*/
-    }
-
-
-    /* New */
-
-    .new ul {
-		display: inline-block;
-		outline: none;
-		cursor: pointer;
-		text-align: center;
-
-		-webkit-box-shadow: 0 2px 5px rgba(0,0,0,.2);
-		-moz-box-shadow: 0 2px 5px rgba(0,0,0,.2);
-		box-shadow: 0 2px 5px rgba(0,0,0,.2);
-    }
-
-    .new ul li {
-		float: left;
-		list-style: none;
-    }
-
-    .new ul li a {
-		font: bold 12px/100% "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
-		border-right: 1px solid #646464;
-		padding: 11px 10px;
-		text-decoration: none;
-		color: rgba(255,255,255,1);
-		text-shadow: 0 -1px 0 rgba(0,0,0,.9);
-
-		background: -webkit-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
-		background: -moz-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
-		background: -ms-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
-		background: -o-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
-		background: linear-gradient(to bottom, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
-    }
-
-    .new ul li a:before {
-		border-left: 1px solid rgba(255,255,255,.1);
-		content: "";
-		padding: 10px 10px;
-		margin: 0 -10px;
-		position: relative;
-    }
-
-    .new ul li a:after {
-		border-right: 1px solid rgba(255,255,255,.1);
-		content: "";
-		padding: 10px 10px;
-		margin: 0 -10px;
-		position: relative;
-    }
-
-    .new ul li:last-child a:after {border: none;}
-
-		.new ul li:first-child a {-moz-border-radius: 5px 0 0 5px; border-radius: 5px 0 0 5px;}
-		.new ul li:last-child a {-moz-border-radius: 0 5px 5px 0; border-radius: 0 5px 5px 0;}
-
-		.new ul li a:hover {
-		border-right: 1px solid rgba(255,255,255,.2);
-		color: #ffffff;
-		text-shadow: 0 -1px 0 rgba(0,0,0,.5);
-
-		-webkit-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
-		-moz-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
-		box-shadow: inset 0 0 40px rgba(255,255,255,.2);
-
-		background-image: -webkit-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
-		background-image: -moz-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
-		background-image: -ms-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
-		background-image: -o-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
-		background-image: linear-gradient(to bottom, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
-    }
-
-    .new ul li a:active {
-		-webkit-box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
-		-moz-box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
-		box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
-    }
-
-    .new ul li a.current {
-		background: -webkit-linear-gradient(top, #383a3a, #525051);
-		background: -moz-linear-gradient(top, #383a3a, #525051);
-		background: -ms-linear-gradient(top, #383a3a, #525051);
-		background: -o-linear-gradient(top, #383a3a, #525051);
-		background: linear-gradient(to bottom, #383a3a, #525051);
-
-		-webkit-box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
-		-moz-box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
-		box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
-
-		color: #ffffff;
-		text-shadow: 0 1px 0 rgba(0,0,0,.9);
-	}
-
-    #container .container-SD {   display: block;   margin: 1px 0;}
-	
-	
-	#MFRiskReturn{
-    height:400px;
-    width:500px;
-    float:left;
-    padding:15px; 
-	}
-	
-	#MFvsBM{
-    padding:15px 20px; 
-	float:right;
-	height:400px;
-    width:700px;
-	}
-	
-	#slider-range-header{
-	padding:15px 20px 15px 30px;
-	float:right;
-	height:100px;
-	width:670px;
-	}
-	
-	
-	#slider-text{
-	padding:15px 20px; 
-	}
-	
-	.axis path,
-	.axis line {
-	  fill: none;
-	  stroke: #000;
-	  shape-rendering: crispEdges;
-	}
-
-	.x.axis path {
-	  display: none;
-	}
-
-	.line {
-	  fill: none;
-	  stroke-width: 2.5px;
-	}
-
-	.legend rect {
-	  fill:white;
-	  stroke:black;
-	  opacity:0.5;
-	 }
-	
-	#​tooltip {
-		display:none;
-		border:1px solid #F00;
-		width:150px;
-	}​
-	
-	.tiptext {
-		background:#ccc;
-		border: 1px #333 solid;
-		padding:5px;
-		width:100px;
-	}
-	.description {
-		display:none;
-		position:absolute;
-		border:1px solid #000;
-		width:400px;
-		height:400px;
-	}
-	
-	.d3-tip {
-	  line-height: 1;
-	  font-weight: bold;
-	  padding: 12px;
-	  background: rgba(0, 0, 0, 0.8);
-	  color: #fff;
-	  border-radius: 2px;
-	}
-
-	/* Creates a small triangle extender for the tooltip */
-	.d3-tip:after {
-	  box-sizing: border-box;
-	  display: inline;
-	  font-size: 5px;
-	  width: 100%;
-	  line-height: 1;
-	  color: rgba(0, 0, 0, 0.8);
-	  content: "\25BC";
-	  position: absolute;
-	  text-align: center;
-	}
-
-	/* Style northward tooltips differently */
-	.d3-tip.n:after {
-	  margin: -1px 0 0 0;
-	  top: 100%;
-	  left: 0;
-	}
-	
-	.hover-line { 
-	  stroke: steelblue;  
-	  fill: none;
-	  stroke-width: 1.5px;
-	}
-	
-    /* WHIPLASH */
-
-</style>
+<link rel="stylesheet" href="jquery-ui-1.11.4.custom/mfMgr.css">
 <link rel="stylesheet" href="jquery-ui-1.11.4.custom/jquery-ui.css">
 <script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
-<script src="jquery-ui-1.11.4.custom/jquery-uiTS.js"></script>
+<script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 <script src="d3.min.js"></script>
+<script src="dataManipulator.js"></script>
 <script src="jquery-ui-1.11.4.custom/external/jquery/jquery-labrat-tip.js"></script>
 <script src="jquery-ui-1.11.4.custom/external/jquery/d3-legend.js"></script>
 
@@ -315,13 +28,14 @@
 	window.MFVsBMHeight = 400;
 	window.MFVsBMWidth = 700;
 	window.dispCircleRadius = 8;
-		
-	//given that both BM and MF will have the same date range 
+	window.dispBMName = '';	
+	window.dispMFName = '';
+	//given that both BM and MF will have the same Date range 
 	//we can read the current BM values itself
 	function findIndex(findDt){
 		
 		for(ctr = 0 ;ctr < bm_Data_.length; ctr++){
-			if( (bm_Data_[ctr].date).getTime() === findDt.getTime() )
+			if( (bm_Data_[ctr].Date).getTime() === findDt.getTime() )
 				return ctr;
 		}
 		return -1;
@@ -329,64 +43,84 @@
 
 	
 	// to be called initially
-	function initGlobalSetBM(idx){
+	function initGlobalSetBM(){
 	
 			//FOR NOW use 0 index .. but we need to have a map
 			// for MF data and bm index
-			window.bm_Data_ = bm_array[idx];
+			window.bm_Data_ = retDefaultBMData();
+			dispBMName = retDefaultBMName();
 			
 			window.bm_Data_.forEach(function(d) {
-					d.date = new Date(d.date);
-					d.change = +d.change;
+					d.Date = new Date(d.Date);
+					d.closing = +d.closing;
 				  });
+			console.log(' JUST FINISHED !!');	  
 		//first time user sees chart she should be able to see only 50% of the total time period	  
-		//then these 2 values are continually updated in slider function
+		//then these 2 values are continually upDated in slider function
 			if(window._BM_MF_FromDt_idx == -1 && window._BM_MF_ToDt_idx == -1){
-				_BM_MF_FromDt_idx = bm_Data_.length*(0.5);	
+				_BM_MF_FromDt_idx = Math.round( bm_Data_.length*(0.5) );	
 				_BM_MF_ToDt_idx = bm_Data_.length-1;	  
 			}
 				
 	}	 
 	
+	function setBMDataBasedOnMF(_mf_name){
+		dispBMName = retBMName(_mf_name);
+		dispMFName = _mf_name;
+		bm_Data_ = retBMData(_mf_name);
+		current_MF_Data_ = retMFData (_mf_name);
+		//init
+		bm_Data_.forEach(function(d) {
+					d.Date = new Date(d.Date);
+					d.closing = +d.closing;
+				  });
+		current_MF_Data_.forEach(function(d) {
+					d.Date = new Date(d.Date);
+					d.closing = +d.closing;
+				  });
+				  
+		console.log("IN setBMDataBasedOnMF value of MF "+_mf_name+" and length "+ current_MF_Data_.length);
+	}
+	
 	function _reScaleBM_MF_axes(init_Data_) {
 	
 	if (current_MF_Data_.length == 0)	  
 				  current_MF_Data_ = bm_Data_;
-				  
-			sliced_bm_Data_ = bm_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx);
+			//both slices will have window prefix since we intend to use them outside this function	  
+			window.sliced_bm_Data_ = calcDailyCumuChanges( bm_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
 			
 			if(init_Data_ != null) //meaning its being called by click on mf circle ; else init
 				current_MF_Data_ = init_Data_;
 				
-			current_Data_ = current_MF_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx);
+			window.current_Data_ = calcDailyCumuChanges( current_MF_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
 			
 			
 			var minDate = new Date(); var maxDate = new Date(); var minClose = 0; var maxClose = 0;
 			// figure out the min and max shite
-			if( d3.max(sliced_bm_Data_, function(d) { return d.change; }) > d3.max(current_Data_, function(d) { return d.change; }) )
-				maxClose = d3.max(sliced_bm_Data_, function(d) { return d.change; });
+			if( d3.max(sliced_bm_Data_, function(d) { return d.cumuChg; }) > d3.max(current_Data_, function(d) { return d.cumuChg; }) )
+				maxClose = d3.max(sliced_bm_Data_, function(d) { return d.cumuChg; });
 			else
-				maxClose = d3.max(current_Data_, function(d) { return d.change; });
+				maxClose = d3.max(current_Data_, function(d) { return d.cumuChg; });
 				
-			if( d3.min(sliced_bm_Data_, function(d) { return d.change; }) < d3.min(current_Data_, function(d) { return d.change; }) )
-				minClose = d3.min(sliced_bm_Data_, function(d) { return d.change; });
+			if( d3.min(sliced_bm_Data_, function(d) { return d.cumuChg; }) < d3.min(current_Data_, function(d) { return d.cumuChg; }) )
+				minClose = d3.min(sliced_bm_Data_, function(d) { return d.cumuChg; });
 			else
-				minClose = d3.min(current_Data_, function(d) { return d.change; });
+				minClose = d3.min(current_Data_, function(d) { return d.cumuChg; });
 				
-			if( d3.max(sliced_bm_Data_, function(d) { return d.date; }) > d3.max(current_Data_, function(d) { return d.date; }) )
-				maxDate = d3.max(sliced_bm_Data_, function(d) { return d.date; });
+			if( d3.max(sliced_bm_Data_, function(d) { return d.Date; }) > d3.max(current_Data_, function(d) { return d.Date; }) )
+				maxDate = d3.max(sliced_bm_Data_, function(d) { return d.Date; });
 			else
-				maxDate = d3.max(current_Data_, function(d) { return d.date; });
+				maxDate = d3.max(current_Data_, function(d) { return d.Date; });
 				
-			if( d3.min(sliced_bm_Data_, function(d) { return d.date; }) < d3.min(current_Data_, function(d) { return d.date; }) )
-				minDate = d3.min(sliced_bm_Data_, function(d) { return d.date; });
+			if( d3.min(sliced_bm_Data_, function(d) { return d.Date; }) < d3.min(current_Data_, function(d) { return d.Date; }) )
+				minDate = d3.min(sliced_bm_Data_, function(d) { return d.Date; });
 			else
-				minDate = d3.min(current_Data_, function(d) { return d.date; });
+				minDate = d3.min(current_Data_, function(d) { return d.Date; });
 			//
 			
 			var line = d3.svg.line()
-						.x(function(d) { return xScaler(d.date); })
-						.y(function(d) { return yScaler(d.change); });
+						.x(function(d) { return xScaler(d.Date); })
+						.y(function(d) { return yScaler(d.cumuChg); });
 
 			var svg = d3.select(".chart2");
 			
@@ -399,15 +133,15 @@
 			xScaler.domain([minDate, maxDate]);
 			yScaler.domain([minClose, maxClose]);
 			
-			//date picker - set min and max dates for the calendar to show
-			// also setup call back function for date change ..if that happens
+			//Date picker - set min and max Dates for the calendar to show
+			// also setup call back function for Date closing ..if that happens
 			// then you need call this _reScaleBM_MF_axes after resetting start and end index
 			if(bm_Data_ == current_MF_Data_){
 			
 				$(function() {
 						$( "#FromDt" ).datepicker( 
-							{ minDate: bm_Data_[0].date, 
-							  maxDate: bm_Data_[bm_Data_.length-1].date ,
+							{ minDate: bm_Data_[0].Date, 
+							  maxDate: bm_Data_[bm_Data_.length-1].Date ,
 							  beforeShowDay: $.datepicker.noWeekends , 
 							  onClose: function(selectedDate) {
 							  //need to pass via Date class since the selectedDate comes in as string
@@ -416,8 +150,8 @@
 							  if( null !== selectedDate){
 									var locStore = _BM_MF_FromDt_idx;
 									_BM_MF_FromDt_idx = findIndex( new Date(selectedDate) );
-									
-									//set the slider values to the ones selected by the date
+									console.log('CON1 '+locStore+' '+_BM_MF_FromDt_idx+' '+_BM_MF_ToDt_idx);
+									//set the slider values to the ones selected by the Date
 									if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
 										$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
 										//now call the rescale function
@@ -426,7 +160,7 @@
 									else{
 										alert("sorry from's always going to be lesser than TO!!");
 										_BM_MF_FromDt_idx = locStore;
-										$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].date );
+										$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].Date );
 									}
 								}
 							  }
@@ -437,15 +171,16 @@
 				
 				$(function() {
 						$( "#ToDt" ).datepicker(
-							{ minDate: bm_Data_[0].date, 
-							  maxDate: bm_Data_[bm_Data_.length-1].date ,
+							{ minDate: bm_Data_[0].Date, 
+							  maxDate: bm_Data_[bm_Data_.length-1].Date ,
 							  beforeShowDay: $.datepicker.noWeekends ,
 							  onClose: function(selectedDate) {
 							  
 							  if( null !== selectedDate){
 									var locStore = _BM_MF_ToDt_idx;
 									_BM_MF_ToDt_idx = findIndex( new Date(selectedDate) );
-									//set the slider values to the ones selected by the date
+									console.log('CON2 '+locStore+' '+_BM_MF_FromDt_idx+' '+_BM_MF_ToDt_idx);
+									//set the slider values to the ones selected by the Date
 									//but also check if the end dt > start ...
 									if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
 										$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
@@ -454,7 +189,7 @@
 									}else{
 										alert("sorry from's always going to be lesser than TO!!");
 										_BM_MF_ToDt_idx = locStore;
-										$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].date );
+										$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].Date );
 									}
 								  }
 								
@@ -474,8 +209,8 @@
 			  .datum(sliced_bm_Data_)
 			  .attr("class", "line")
 			  .attr("d", line)
-			  .attr("data-legend", "Benchmark")
-			  .attr("stroke","steelblue")
+			  .attr("data-legend", dispBMName)
+			  .attr("stroke","SpringGreen")
 			  .attr("transform", "translate("+marOffsetX+","+marOffsetY+")")
 			  
 			//if the user hath selected some MF  
@@ -484,17 +219,18 @@
 				  .datum(current_Data_)
 				  .attr("class", "line")
 				  .attr("d", line)
-				  .attr("data-legend"," Selected MF ")
-				  .attr("stroke","red")
+				  .attr("data-legend", dispMFName)
+				  .attr("stroke","Turquoise")
 				  .attr("transform", "translate("+marOffsetX+","+marOffsetY+")")
 				  
 			}	  
 			
 			svg.selectAll(".legend").remove();
-			//now set to and from date calendars and also slider positions
+			//now set to and from Date calendars and also slider positions
+			
 			if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
-				$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].date );
-				$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].date );	
+				$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].Date );
+				$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].Date );	
 				$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )	
 			}
 			else{
@@ -508,6 +244,7 @@
 				.style("font-size","15px")
 				.attr("data-style-padding",10)
 				.call(d3.legend);
+			//console();	
 
     }
 </script>
@@ -552,7 +289,7 @@
 				  .attr('class', 'd3-tip')
 				  .offset([-10, 0])
 				  .html(function(d) {
-					return "<strong>Risk:</strong> " + d.x1 +"<br><strong>Return:</strong> " + d.x2 + "</span>";
+					return "<strong>Risk:</strong> " + d.name +"<br><strong>Risk:</strong> " + d.x1 +"<br><strong>Return:</strong> " + d.x2 + "</span>";
 				  })	
 
 			var chart = d3.select(".chart1")
@@ -565,42 +302,19 @@
 				
 			//d3.csv("http://localhost:8080/test.csv", type, function(error, data) {
 			//below is the risk return metric we will be using for charts
-			  var data = [
-			{x1: -0.53,  x2: 0.58},
-			{x1: -2.91,  x2: 0.19},
-			{x1: 1.01,  x2: -2.50},
-			{x1: 0.50,  x2: -0.90},
-			{x1: -2.16,  x2: -3.37},
-			{x1: -0.63,  x2: -0.56}
-			  ];
 
+			var data_MF = retDataMFRiskReturn();
+
+			data_MF.forEach(function(d) {
+					d.x1 = +d.x1;
+					d.x2 = +d.x2;
+					d.name = d.name;
+				  });
+			
 			//below we need to push each mf's  time series
 			//for now we will use random numbers
 			//**********below is where you should be placing MF data / arrays via static in django ********//
-			for(idxCtr = 0 ; idxCtr < data.length; idxCtr++)
-			{
-					_Data_ = [
-				{ date:"24-Apr-2007", change: (Math.random() * 10) },
-				{ date:"25-Apr-2007", change: (Math.random() * 10) },
-				{ date:"26-Apr-2007", change: (Math.random() * 10) },
-				{ date:"27-Apr-2007", change: (Math.random() * 10) },
-				{ date:"30-Apr-2007", change: (Math.random() * 10) },
-				{ date:"01-May-2007", change: (Math.random() * 10) },
-				{ date:"02-May-2007", change: (Math.random() * 10) },
-				{ date:"03-May-2007", change: (Math.random() * 10) },
-				{ date:"04-May-2007", change: (Math.random() * 10) },
-				{ date:"07-May-2007", change: (Math.random() * 10) },
-				{ date:"08-May-2007", change: (Math.random() * 10) },
-				{ date:"09-May-2007", change: (Math.random() * 10) },
-				{ date:"10-May-2007", change: (Math.random() * 10) },
-				{ date:"11-May-2007", change: (Math.random() * 10) }
-				  ];
-				  _Data_.forEach(function(d) {
-					d.date = new Date(d.date);
-					d.change = +d.change;
-				  });
-				  master_array.push(_Data_);
-			}	
+				
 			
 			chart.append("g")
 				  .attr("class", "x axis")
@@ -626,7 +340,7 @@
 				  
 			
 			chart.selectAll(".bar")
-				  .data(data)
+				  .data(data_MF)
 				  .enter()
 				  .append("svg:circle")
 				  .attr("fill", function(d, i) { return colors(i); })
@@ -636,24 +350,20 @@
 											else
 												store = Math.abs(d.x2)*10;
 											return store 
-											return store 
+											
 										} )
 				  .attr("cx", function(d){return  xFun(d.x1) } )
 				  .attr("cy", function(d){return  yFun(d.x2)} )
-				  .attr("title", function(d){return  xFun(d.x1)+" "+xFun(d.x2)} )
-				  .on('click', function(d,i){ _reScaleBM_MF_axes( master_array[i] ) })
-				  .on('mouseover', tip.show)
-				  .on('mouseout', tip.hide);
+				  .on('click', function(d,i){ 
+					setBMDataBasedOnMF( d.name ) ;
+					_reScaleBM_MF_axes( retMFData(d.name) ) ;
+				  })
+				  .on('mouseover', tip.show )
+				  .on('mouseout', tip.hide );
 				  //.append("svg:title")
 				  //.text(function(d) { return d.x1; });;
 				  
 				  
-			function type(d) {
-			  d.value = +d.value; // coerce to number
-			  return d;
-			}
-
-			//see if you can add on click
 			</script>
     </div>
 	
@@ -701,26 +411,9 @@
 		svg.call( tipLineChart );
 		//d3.tsv("data.tsv", function(error, data) {
 		//**********below is where you should be placing Benchmark data / arrays via static in django ********//
-		 init_Data_ = [
-		{ date:"24-Apr-2007", change: 2.01 },
-		{ date:"25-Apr-2007", change: 3.24},
-		{ date:"26-Apr-2007", change: 4.05},
-		{ date:"27-Apr-2007", change: 5.20 },
-		{ date:"30-Apr-2007", change: 6.79 },
-		{ date:"01-May-2007", change: 5.92 },
-		{ date:"02-May-2007", change: 6.30 },
-		{ date:"03-May-2007", change: 7.23 },
-		{ date:"04-May-2007", change: 5.93 },
-		{ date:"07-May-2007", change: 5.29 },
-		{ date:"08-May-2007", change: 5.02 },
-		{ date:"09-May-2007", change: 6.09 },
-		{ date:"10-May-2007", change: 7.19 },
-		{ date:"11-May-2007", change: 6.68 }
-		  ];
-		  // generally there would be more than one
-		  bm_array.push(init_Data_);
+		 
 		  //to init we call with 0 ..will need to change it after template mess
-		  initGlobalSetBM(0);
+		  initGlobalSetBM();
 		  
 		  //add hover line
 		  
@@ -732,17 +425,17 @@
 					.attr("x1", 10).attr("x2", 10) 
 					.attr("y1", 0).attr("y2", height); 
 			// Hide hover line by default.
-			hoverLine.style("opacity", 0.001);
+			hoverLine.style("opacity", 0.1);
 			
 			//hoverLineGroup.call( tipLineChart );
 			
 			circleBenchMark = svg.append("circle")
 				.attr("opacity", 0.00001)
-				.attr({	r: dispCircleRadius, fill: 'steelblue' });
+				.attr({	r: dispCircleRadius, fill: 'SpringGreen' });
 
 			circleMF = svg.append("circle")
 				.attr("opacity", 0.00001)
-				.attr({	r: dispCircleRadius, fill: 'red' });	
+				.attr({	r: dispCircleRadius, fill: 'Turquoise' });	
 		  
 		    d3.select(".chart2").on("mouseover", function() { 
 			  
@@ -782,7 +475,7 @@
 				tipLineChart//.attr("transform","translate("+(width - posBM.x)+","+(height - posBM.y)+")")
 				.html(function(d) {
 					
-					return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>Benchmark % Chg:</strong> " + (yScaler.invert(posBM.y)).toFixed(2) + "</span>";
+					return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName +" % Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span>";
 				})		
 				
 				if(bm_Data_ != current_MF_Data_){
@@ -814,7 +507,7 @@
 						//html for hover box
 						tipLineChart.html(function(d) {
 							
-							return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>Benchmark % Chg:</strong> " + (yScaler.invert( posBM.y )).toFixed(2) + "</span><br><strong>Selected MF % Change:</strong>" + (yScaler.invert ( posMF.y )).toFixed(2);
+							return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName + "% Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span><br><strong>"+dispMFName+ "% Change:</strong>" + retDailyChange( current_Data_ , ( xScaler.invert(posMF.x)) ).toFixed(2);
 						})
 				}
 				// end code for 2nd path
@@ -842,13 +535,9 @@
 		  });
 		  		  // Hover line. 
 				  
-		  init_Data_.forEach(function(d) {
-			d.date = new Date(d.date);
-			d.change = +d.change;
-		  });
-
-		  xScaler.domain(d3.extent(init_Data_, function(d) { return d.date; }));
-		  yScaler.domain(d3.extent(init_Data_, function(d) { return d.change; }));
+		  
+		  xScaler.domain(d3.extent(bm_Data_, function(d) { return d.Date; }));
+		  yScaler.domain(d3.extent(bm_Data_, function(d) { return d.closing; }));
 		  
 		  svg.append("g")
 			  .attr("class", "x axis")
@@ -865,7 +554,8 @@
 			  .style("text-anchor", "end")
 			  .text("% Daily Change (%)");
 		//call the final rendering
-		  _reScaleBM_MF_axes(init_Data_); 	
+		
+		_reScaleBM_MF_axes(bm_Data_); 	
 		
 		
 		</script>
@@ -881,23 +571,27 @@
 			  //values: [ 0 , bm_Data_.length-2 ],
 			  //the below is the call back function when the slider's moved
 			  slide: function( event, ui ) {
-				begDate = bm_Data_[ui.values[ 0 ]].date;
-				endDate = bm_Data_[ui.values[ 1 ]-1].date;
+				begDate = bm_Data_[ui.values[ 0 ]].Date;
+				endDate = bm_Data_[ui.values[ 1 ]-1].Date;
 				
 				_BM_MF_FromDt_idx = ui.values[ 0 ];
 				_BM_MF_ToDt_idx = ui.values[ 1 ];
 				//this will call the resize for every event ..right now jarry and maybe we should call it once
 				// after the slider has been laid to rest ?
 				
-				_reScaleBM_MF_axes(null);
+				//
 				
+			  },
+			  stop: function( event, ui ) {
+				//rather than call it every movement in the above call it once after user lets go of handle
+				_reScaleBM_MF_axes(null);
 			  }
 			});
-			//first time init of dates and alider
-			$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].date );
-			$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].date );
-			$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )	
 			
+		//first time init of Dates and alider
+		$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].Date );
+		$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].Date );
+		$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] );	
 			
 		  });
 	
