@@ -6,10 +6,11 @@
 <link rel="stylesheet" href="jquery-ui-1.11.4.custom/jquery-ui.css">
 <script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
 <script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+<script src="jquery-ui-1.11.4.custom/jquery.ui.slider.js"></script>
 <script src="d3.min.js"></script>
-<script src="dataManipulator.js"></script>
 <script src="jquery-ui-1.11.4.custom/external/jquery/jquery-labrat-tip.js"></script>
 <script src="jquery-ui-1.11.4.custom/external/jquery/d3-legend.js"></script>
+<script src="dataManipulator.js"></script>
 
 
 <script>
@@ -30,12 +31,13 @@
 	window.dispCircleRadius = 8;
 	window.dispBMName = '';	
 	window.dispMFName = '';
+	window.isDragging = false;
 	//given that both BM and MF will have the same Date range 
 	//we can read the current BM values itself
 	function findIndex(findDt){
 		
 		for(ctr = 0 ;ctr < bm_Data_.length; ctr++){
-			if( (bm_Data_[ctr].Date).getTime() === findDt.getTime() )
+			if( (bm_Data_[ctr].Date).getTime() >= findDt.getTime() )
 				return ctr;
 		}
 		return -1;
@@ -56,12 +58,13 @@
 				  });
 			console.log(' JUST FINISHED !!');	  
 		//first time user sees chart she should be able to see only 50% of the total time period	  
-		//then these 2 values are continually upDated in slider function
+		//then these 2 values are continually upDated in dragslider function
 			if(window._BM_MF_FromDt_idx == -1 && window._BM_MF_ToDt_idx == -1){
 				_BM_MF_FromDt_idx = Math.round( bm_Data_.length*(0.5) );	
 				_BM_MF_ToDt_idx = bm_Data_.length-1;	  
 			}
-				
+		//initialize the autocomplete list
+		
 	}	 
 	
 	function setBMDataBasedOnMF(_mf_name){
@@ -83,17 +86,19 @@
 	}
 	
 	function _reScaleBM_MF_axes(init_Data_) {
-	
+	console.log('RESCALING !!');
 	if (current_MF_Data_.length == 0)	  
 				  current_MF_Data_ = bm_Data_;
-			//both slices will have window prefix since we intend to use them outside this function	  
-			window.sliced_bm_Data_ = calcDailyCumuChanges( bm_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
+			//both slices will have window prefix since we intend to use them outside this function	
+			//defensive coding
+			if(_BM_MF_FromDt_idx >= 0 && _BM_MF_ToDt_idx >= 0){	
+				window.sliced_bm_Data_ = calcDailyCumuChanges( bm_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
 			
-			if(init_Data_ != null) //meaning its being called by click on mf circle ; else init
-				current_MF_Data_ = init_Data_;
-				
-			window.current_Data_ = calcDailyCumuChanges( current_MF_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
-			
+				if(init_Data_ != null) //meaning its being called by click on mf circle ; else init
+					current_MF_Data_ = init_Data_;
+					
+				window.current_Data_ = calcDailyCumuChanges( current_MF_Data_.slice(_BM_MF_FromDt_idx, _BM_MF_ToDt_idx) );
+			}
 			
 			var minDate = new Date(); var maxDate = new Date(); var minClose = 0; var maxClose = 0;
 			// figure out the min and max shite
@@ -143,17 +148,20 @@
 							{ minDate: bm_Data_[0].Date, 
 							  maxDate: bm_Data_[bm_Data_.length-1].Date ,
 							  beforeShowDay: $.datepicker.noWeekends , 
+							  dateFormat: 'dd/mm/yy',
+							  constrainInput: true,
 							  onClose: function(selectedDate) {
 							  //need to pass via Date class since the selectedDate comes in as string
 							  //*** whenever comparing or working with DATES lets stick to conversion into Date object***
-							  
+							  console.log('CHIKA CHAN '+new Date(selectedDate));		
 							  if( null !== selectedDate){
+									console.log('CON11 '+new Date(selectedDate).getMonth()+new Date(selectedDate).getDate());
 									var locStore = _BM_MF_FromDt_idx;
 									_BM_MF_FromDt_idx = findIndex( new Date(selectedDate) );
 									console.log('CON1 '+locStore+' '+_BM_MF_FromDt_idx+' '+_BM_MF_ToDt_idx);
-									//set the slider values to the ones selected by the Date
+									//set the dragslider values to the ones selected by the Date
 									if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
-										$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
+										$( "#dragslider-range" ).dragslider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
 										//now call the rescale function
 										_reScaleBM_MF_axes(null);
 									}
@@ -173,17 +181,19 @@
 						$( "#ToDt" ).datepicker(
 							{ minDate: bm_Data_[0].Date, 
 							  maxDate: bm_Data_[bm_Data_.length-1].Date ,
-							  beforeShowDay: $.datepicker.noWeekends ,
+							  beforeShowDay: $.datepicker.noWeekends , 
+							  dateFormat: 'dd/mm/yy',
 							  onClose: function(selectedDate) {
 							  
 							  if( null !== selectedDate){
+							  	   dateConst = (selectedDate.split("/"));
 									var locStore = _BM_MF_ToDt_idx;
-									_BM_MF_ToDt_idx = findIndex( new Date(selectedDate) );
-									console.log('CON2 '+locStore+' '+_BM_MF_FromDt_idx+' '+_BM_MF_ToDt_idx);
-									//set the slider values to the ones selected by the Date
+									_BM_MF_ToDt_idx = findIndex( new Date( dateConst[1]+'/'+dateConst[0]+'/'+dateConst[2] ) );
+									console.log('CON2 '+locStore+' '+_BM_MF_FromDt_idx+' '+_BM_MF_ToDt_idx+' '+new Date( dateConst[1]+'/'+dateConst[0]+'/'+dateConst[2] ) + bm_Data_[1982].Date);
+									//set the dragslider values to the ones selected by the Date
 									//but also check if the end dt > start ...
 									if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
-										$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
+										$( "#dragslider-range" ).dragslider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )
 										//now call the rescale function
 										_reScaleBM_MF_axes(null);
 									}else{
@@ -226,12 +236,12 @@
 			}	  
 			
 			svg.selectAll(".legend").remove();
-			//now set to and from Date calendars and also slider positions
+			//now set to and from Date calendars and also dragslider positions
 			
 			if ( _BM_MF_FromDt_idx < _BM_MF_ToDt_idx) {
 				$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].Date );
 				$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].Date );	
-				$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )	
+				$( "#dragslider-range" ).dragslider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] )	
 			}
 			else{
 				//better error handling ..for now just alert
@@ -368,6 +378,9 @@
     </div>
 	
 	<div id = "MFvsBM">
+	<label for="search">Choose Comparison: </label>
+	<input id="search">
+	<a href="#" onclick="hardCodedTimeFrame('YTD')" class="myButton">YTD</a> <a href="#" onclick="hardCodedTimeFrame('6M')" class="myButton">6M</a> <a href="#" onclick="hardCodedTimeFrame('1Y')" class="myButton">1Y</a> <a href="#" onclick="hardCodedTimeFrame('3Y')" class="myButton">3Y</a> <a href="#" onclick="hardCodedTimeFrame('5Y')" class="myButton">5Y</a>
 	<svg class="chart2" id="OK"></svg>
 	<script>	
 		var margin = {top: 20, right: 30, bottom: 20, left: 30},
@@ -376,7 +389,7 @@
 		//width = 700 , height = 500 ;
 
 		var parseDate = d3.time.format("%d-%b-%y").parse;
-		//hopefully store slider values
+		//hopefully store dragslider values
 		window.marOffsetX = margin.right;
 		window.marOffsetY = margin.top;
 		
@@ -444,12 +457,12 @@
 			}).on("mousemove", function() {
 			  var xCoOrd = d3.mouse(this)[0];
 			  var yCoOrd = d3.mouse(this)[1];
-			  console.log("x and y coordinate Function ENTRY: " + [xCoOrd , yCoOrd] );
+			  //console.log("x and y coordinate Function ENTRY: " + [xCoOrd , yCoOrd] );
 			  hoverLine.attr("x1", xCoOrd - margin.left ).attr("x2", xCoOrd - margin.left ).style("opacity", 0.2);
 			  
 			  
 			    var pathLength = benchMarkPath.node().getTotalLength();
-				console.log("bm length " + pathLength );
+				//console.log("bm length " + pathLength );
 				//since our hover line has an offset from the xAxis our search
 				//needs to begin from there rather than plain xCoord
 				var x = xCoOrd - margin.left;
@@ -467,7 +480,7 @@
 					else break; //position found
 				}
 				//the code below is for the 2nd path i.e. MF line
-				console.log("BEFORE : x and y coordinate where vertical line intersects graph: " + [posBM.x, posBM.y] );
+				//console.log("BEFORE : x and y coordinate where vertical line intersects graph: " + [posBM.x, posBM.y] );
 				//decorate the dialogue
 				
 				locDt = xScaler.invert(posBM.x);
@@ -475,12 +488,12 @@
 				tipLineChart//.attr("transform","translate("+(width - posBM.x)+","+(height - posBM.y)+")")
 				.html(function(d) {
 					
-					return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName +" % Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span>";
+					return "<strong>Date:</strong> " +locDt.getDate()+"-"+(parseInt(locDt.getMonth())+1)+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName +" % Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span>";
 				})		
 				
 				if(bm_Data_ != current_MF_Data_){
 						pathLength = MFPath.node().getTotalLength();
-						console.log("MF length " + pathLength );
+						//console.log("MF length " + pathLength );
 						//since our hover line has an offset from the xAxis our search
 						//needs to begin from there rather than plain xCoord
 						x = xCoOrd - margin.left;
@@ -497,17 +510,17 @@
 							else if (posMF.x < x) beginning = target;
 							else break; //position found
 						}
-						console.log("x and y coordinate where vertical line intersects graph: " + [posBM.x, posBM.y,posMF.x, posMF.y] );
+						//console.log("x and y coordinate where vertical line intersects graph: " + [posBM.x, posBM.y,posMF.x, posMF.y] );
 						circleMF.attr("opacity", 0.5)
 							.attr("cx", posMF.x )
 							.attr("cy", posMF.y)
-						console.log("data where vertical line intersects graph: " + [ xScaler.invert(posBM.x), yScaler.invert(posBM.y) ,xScaler.invert(posMF.x), yScaler.invert(posMF.y)]);	
+						//console.log("data where vertical line intersects graph: " + [ xScaler.invert(posBM.x), yScaler.invert(posBM.y) ,xScaler.invert(posMF.x), yScaler.invert(posMF.y)]);	
 						
 						locDt = xScaler.invert(posMF.x);
 						//html for hover box
 						tipLineChart.html(function(d) {
 							
-							return "<strong>Date:</strong> " +locDt.getDate()+"-"+locDt.getMonth()+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName + "% Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span><br><strong>"+dispMFName+ "% Change:</strong>" + retDailyChange( current_Data_ , ( xScaler.invert(posMF.x)) ).toFixed(2);
+							return "<strong>Date:</strong> " +locDt.getDate()+"-"+(parseInt(locDt.getMonth())+1)+"-"+locDt.getFullYear() +"<br><strong>"+ dispBMName + "% Chg:</strong> " + retDailyChange( sliced_bm_Data_ , ( xScaler.invert(posBM.x)) ).toFixed(2) + "</span><br><strong>"+dispMFName+ "% Change:</strong>" + retDailyChange( current_Data_ , ( xScaler.invert(posMF.x)) ).toFixed(2);
 						})
 				}
 				// end code for 2nd path
@@ -518,15 +531,15 @@
 				
 				
 				
-				console.log("data where vertical line intersects graph: " + [xScaler.invert(posBM.x), yScaler.invert(posBM.y)]);
+				//console.log("data where vertical line intersects graph: " + [xScaler.invert(posBM.x), yScaler.invert(posBM.y)]);
 
 			  
 			  tipLineChart.show();
-			  console.log('mousemove x', ( d3.mouse(this)[0] ));
-			  console.log('mousemove y', ( d3.mouse(this)[1] ));
+			  //console.log('mousemove x', ( d3.mouse(this)[0] ));
+			  //console.log('mousemove y', ( d3.mouse(this)[1] ));
 			  
 			})  .on("mouseout", function() {
-				console.log('mouseout');
+				//console.log('mouseout');
 				hoverLine.style("opacity", 0.001);
 				circleBenchMark.attr("opacity", 0.001);
 				circleMF.attr("opacity", 0.001);
@@ -564,51 +577,173 @@
 		$(function() {
 			var begDate = new Date();
 			var endDate = new Date();
-			$( "#slider-range" ).slider({
+			$( "#dragslider-range" ).dragslider({
 			  range: true,
 			  min: 0,
+			  rangeDrag: true,
 			  max: bm_Data_.length-1,
 			  //values: [ 0 , bm_Data_.length-2 ],
-			  //the below is the call back function when the slider's moved
+			  //the below is the call back function when the dragslider's moved
 			  slide: function( event, ui ) {
-				begDate = bm_Data_[ui.values[ 0 ]].Date;
-				endDate = bm_Data_[ui.values[ 1 ]-1].Date;
+			  //if the below is true then this is called when we click on the range rather
+				//than drag the handle
+				if(!isDragging){
+					begDate = bm_Data_[ui.values[ 0 ]].Date;
+					endDate = bm_Data_[ui.values[ 1 ]-1].Date;
+					
+					_BM_MF_FromDt_idx = ui.values[ 0 ];
+					_BM_MF_ToDt_idx = ui.values[ 1 ];
+				}
+				else
+				{
+					console.log('NOW GONE BUST!!!');
+				}
 				
-				_BM_MF_FromDt_idx = ui.values[ 0 ];
-				_BM_MF_ToDt_idx = ui.values[ 1 ];
-				//this will call the resize for every event ..right now jarry and maybe we should call it once
-				// after the slider has been laid to rest ?
-				
-				//
-				
+			  },
+			  change : function ( event, ui ){
+				console.log('HMM MOVING VIA THIS !!'+_BM_MF_FromDt_idx+' '+ui.values[ 0 ]);
+				//over ride if isDragging true
+					
 			  },
 			  stop: function( event, ui ) {
 				//rather than call it every movement in the above call it once after user lets go of handle
-				_reScaleBM_MF_axes(null);
+				//if()
+				if(!isDragging)
+					_reScaleBM_MF_axes(null);
+				
 			  }
 			});
-			
+			$( "#dragslider-range .ui-dragslider-range" ).unbind('mousedown');
+//			$( "#dragslider-range .ui-dragslider-range" ).mousedown(function( event ) {
+					
+//					console.log('OK MAYBE THIS TIME');
+//					isDragging = true;		
+//			});
 		//first time init of Dates and alider
+	
 		$( "#FromDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_FromDt_idx].Date );
 		$( "#ToDt" ).datepicker( "setDate",  bm_Data_[_BM_MF_ToDt_idx].Date );
-		$( "#slider-range" ).slider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] );	
+		$( "#dragslider-range" ).dragslider( "values" , [ _BM_MF_FromDt_idx , _BM_MF_ToDt_idx] );	
 			
 		  });
 	
+		function hardCodedTimeFrame(option){
+			switch(option) {
+				case 'YTD':
+					locArr = retDefaultBMData();
+					_BM_MF_ToDt_idx = locArr.length-1;
+					locEnd = new Date( locArr[_BM_MF_ToDt_idx].Date );
+					_BM_MF_FromDt_idx = findIndex ( new Date( '01/01/'+ locEnd.getFullYear() ) );
+					break;
+				case '6M':
+					locStart = new Date( sliced_bm_Data_[sliced_bm_Data_.length-1].Date );
+					var begD = locStart.getDate();
+					//returns the index from 0 to 11 hence need to add 1
+					var begM = parseInt(locStart.getMonth())+1;
+					var begY = 0;					
+					if( begM <= 6){
+						begM = (12 + begM)-6;
+						begY = parseInt(locStart.getFullYear())-1;
+					}
+					else{
+						begM = (begM)-6;
+						begY = parseInt(locStart.getFullYear());
+					}
+					
+					_BM_MF_FromDt_idx = findIndex ( new Date( begM+'/'+begD+'/'+ begY ) );
+					break;	
+				case '1Y':
+					locStart = new Date( sliced_bm_Data_[sliced_bm_Data_.length-1].Date );
+					var begD = locStart.getDate();
+					//returns the index from 0 to 11 hence need to add 1
+					var begM = parseInt(locStart.getMonth())+1;
+					var begY = parseInt(locStart.getFullYear())-1;
+					console.log('1Y '+begD+'/'+begM+'/'+ begY);
+					//need to send it in MMDDYYYY ..a little screwed up 
+					_BM_MF_FromDt_idx = findIndex ( new Date( begM+'/'+begD+'/'+ begY ) );
+					break;
+				case '3Y':
+					locStart = new Date( sliced_bm_Data_[sliced_bm_Data_.length-1].Date );
+					var begD = locStart.getDate();
+					//returns the index from 0 to 11 hence need to add 1
+					var begM = parseInt(locStart.getMonth())+1;
+					var begY = parseInt(locStart.getFullYear())-3;
+					console.log('3Y '+begD+'/'+begM+'/'+ begY);
+					//need to send it in MMDDYYYY ..a little screwed up 
+					_BM_MF_FromDt_idx = findIndex ( new Date( begM+'/'+begD+'/'+ begY ) );
+					break;
+				case '5Y':
+					locStart = new Date( sliced_bm_Data_[sliced_bm_Data_.length-1].Date );
+					var begD = locStart.getDate();
+					//returns the index from 0 to 11 hence need to add 1
+					var begM = parseInt(locStart.getMonth())+1;
+					var begY = parseInt(locStart.getFullYear())-5;
+					console.log('5Y '+begD+'/'+begM+'/'+ begY);
+					//need to send it in MMDDYYYY ..a little screwed up 
+					_BM_MF_FromDt_idx = findIndex ( new Date( begM+'/'+begD+'/'+ begY ) );
+					break;					
+			}
+			
+			if( _BM_MF_FromDt_idx>=0 && _BM_MF_ToDt_idx>=0 )
+				_reScaleBM_MF_axes(null);
+			else
+				console.log('SOMETHING GOTTA HURTA!!');
+		}
 		
 		</script>
+		<script>
+	  $.widget( "custom.catcomplete", $.ui.autocomplete, {
+		_create: function() {
+		  this._super();
+		  this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+		},
+		_renderMenu: function( ul, items ) {
+		  var that = this,
+			currentCategory = "";
+		  $.each( items, function( index, item ) {
+			var li;
+			if ( item.category != currentCategory ) {
+			  ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+			  currentCategory = item.category;
+			}
+			li = that._renderItemData( ul, item );
+			if ( item.category ) {
+			  li.attr( "aria-label", item.category + " : " + item.label );
+			}
+		  });
+		}
 		
-	
+	  });
+	  
+		
+	  </script>
+	  <script>
+	  $(function() {
+		var data = retSelectList();
+	 
+		$( "#search" ).catcomplete({
+		  delay: 0,
+		  source: data,
+		  select: function(event, ui) { 
+		  //callback when option is selected
+			setBMDataBasedOnMF( ui.item.label ) ;
+			_reScaleBM_MF_axes( retMFData(ui.item.label) ) ;
+		  }
+		});
+		
+	  });
+	  
+  </script>
 	
 	</div>
-<div id="slider-range-header">
-	<div id ="slider-text">
-		<p>From Date: <input type="text" readonly='true' class="fromDate" id="FromDt" style="padding : 3px">     To Date: <input type="text" readonly='true' id="ToDt" style="padding : 3px"></p>
+<div id="dragslider-range-header">
+	<div id ="dragslider-text">
+		<p>From Date: <input type="text" readOnly='true' class="fromDate" id="FromDt" style="padding : 3px">     To Date: <input type="text" readOnly='true' id="ToDt" style="padding : 3px">   </p>
 	</div>	
-	<div id="slider-range"></div>
+	<div id="dragslider-range" class="vik"></div>	
 	
 </div>
 
-	
+
 
 </body>
