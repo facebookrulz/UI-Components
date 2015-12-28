@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body>
+<style>
+
+    .bar {
+    fill: lightlawngreen;
+    }
+    .bar1 {
+    fill: lightslateblue;
+    }
+
+    .axis text {
+    font: 15px sans-serif;
+    }
+
+    @keyframes blinker {
+    50% { opacity: 0.0; }
+    }
+
+    .textarea {
+    color: #FFF;
+    
+    padding: 15px 20px;
+    height: 20px;
+    
+    font-family: 'OpenSansBold', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #C14800;
+    /*animation: blinker 1s linear infinite;*/
+    }
+	
+
+
+    /* MASTER OF PUPPETS */
+
+    * {
+    margin:0;
+    padding:0;
+    }
+    html, body {
+    height:100%;
+    background: #000;
+    }
+
+    div {
+    text-align: left;
+    position: relative;
+    top: 5%;
+    /*padding: 20px;*/
+    /*min-width: 820px;*/
+    }
+
+
+    /* New */
+
+    .new ul {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    }
+
+    .new ul li {
+    float: left;
+    list-style: none;
+    }
+
+    .new ul li a {
+    font: bold 12px/100% "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    border-right: 1px solid #646464;
+    padding: 11px 10px;
+    text-decoration: none;
+    color: rgba(255,255,255,1);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+
+    background: -webkit-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+    background: -moz-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+    background: -ms-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+    background: -o-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+    background: linear-gradient(to bottom, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+    }
+
+    .new ul li a:before {
+    border-left: 1px solid rgba(255,255,255,.1);
+    content: "";
+    padding: 10px 10px;
+    margin: 0 -10px;
+    position: relative;
+    }
+
+    .new ul li a:after {
+    border-right: 1px solid rgba(255,255,255,.1);
+    content: "";
+    padding: 10px 10px;
+    margin: 0 -10px;
+    position: relative;
+    }
+
+    .new ul li:last-child a:after {border: none;}
+
+    .new ul li:first-child a {-moz-border-radius: 5px 0 0 5px; border-radius: 5px 0 0 5px;}
+    .new ul li:last-child a {-moz-border-radius: 0 5px 5px 0; border-radius: 0 5px 5px 0;}
+
+    .new ul li a:hover {
+    border-right: 1px solid rgba(255,255,255,.2);
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+
+    -webkit-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+    -moz-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+    box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+
+    background-image: -webkit-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+    background-image: -moz-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+    background-image: -ms-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+    background-image: -o-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+    background-image: linear-gradient(to bottom, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+    }
+
+    .new ul li a:active {
+    -webkit-box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
+    -moz-box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,.9);
+    }
+
+    .new ul li a.current {
+    background: -webkit-linear-gradient(top, #383a3a, #525051);
+    background: -moz-linear-gradient(top, #383a3a, #525051);
+    background: -ms-linear-gradient(top, #383a3a, #525051);
+    background: -o-linear-gradient(top, #383a3a, #525051);
+    background: linear-gradient(to bottom, #383a3a, #525051);
+
+    -webkit-box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
+    -moz-box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
+    box-shadow: inset 0 5px 10px rgba(0,0,0,.8);
+
+    color: #ffffff;
+    text-shadow: 0 1px 0 rgba(0,0,0,.9);
+	
+    }
+
+    #container .container-SD {   display: block;   margin: 1px 0;}
+	
+	.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+	.line {
+	  fill: none;
+	  stroke-width: 2.5px;
+	}
+	
+	#SD2{
+    height:400px;
+    width:800px;
+    float:left;
+    padding:15px; 
+	}
+	
+	#SD3{
+    padding:15px 20px; 
+	float:left;
+	height:400px;
+    width:600px;
+	}
+	
+	#SD5{
+    padding:15px 20px; 
+	float:left;
+	height:400px;
+    width:600px;
+	}
+	
+	#SD4{
+    height:400px;
+    width:600px;
+    float:left;
+    padding:15px 20px; 
+    }
+    /* WHIPLASH */
+
+</style>
+
+    <div id = "SD1">
+        <div class="new">
+            <ul>
+                <li><a href="javascript:void(0);">Main</a></li>
+                <li><a href="javascript:void(0);">Sectoral</a></li>
+                <li><a class="current" href="javascript:void(0);">Risk</a></li>
+                <li><a href="javascript:void(0);">Perf Attribution</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="SD2" >
+        <svg class="chart"></svg>
+        <script src="d3.min.js" charset="utf-8"></script>
+        <script>
+
+		var margin = {top: 20, right: 20, bottom: 20, left: 20},
+			width = 700 - margin.left - margin.right,
+			height = 400 - margin.top - margin.bottom;
+
+		var x = d3.scale.ordinal()
+			.rangeRoundBands([width,0],0.8);
+
+		var y = d3.scale.linear()
+			.range([height,0]);
+
+		var y1 = d3.scale.linear().range([height, 0]);
+		
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom");
+
+		var xAxis1 = d3.svg.axis()
+			.scale(x)
+			.orient("bottom");
+
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left");
+		
+		var yAxisRight = d3.svg.axis().scale(y1)
+			.orient("right")	
+		
+		var valueline2 = d3.svg.line()
+		.x(function(d) { return x(d.name); })
+		.y(function(d) { return y(d.value); });
+		
+		var valueline = d3.svg.line()
+		.x(function(d) { return x(d.name); })
+		.y(function(d) { return y1(d.value); });
+
+		var chart = d3.select(".chart")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		//d3.csv("http://localhost:8080/test.csv", type, function(error, data) {
+		  var data = [
+		{name: 'Auto',  value: 20},
+		{name: 'Pharma',  value: 10},
+		{name: 'FMCG',  value: 20},
+		{name: 'IT',  value: 30},
+		{name: 'Metals',  value: 20}
+		  ];
+
+		  var data1 = [
+		{name: 'Auto',  value: 30},
+		{name: 'Pharma',  value: 20},
+		{name: 'FMCG',  value: 10},
+		{name: 'IT',  value: 15},
+		{name: 'Metals',  value: 25}
+		];
+		
+		var data2 = [
+		{name: 'Auto',  value: 10},
+		{name: 'Pharma',  value: 20},
+		{name: 'FMCG',  value: 15},
+		{name: 'IT',  value: 25},
+		{name: 'Metals',  value: 30}
+		];
+
+		var data3 = [
+		{name: 'Auto',  value: 150},
+		{name: 'Pharma',  value: 20},
+		{name: 'FMCG',  value: 180},
+		{name: 'IT',  value: 25},
+		{name: 'Metals',  value: 330}
+		];
+		
+		  x.domain(data.map(function(d) { return d.name; }));
+		  y.domain([0, d3.max(data2, function(d) { return d.value; })]);
+		  y1.domain([0, d3.max(data3, function(d) { return d.value; })]);
+
+
+		chart.append("g")
+			  .attr("class", "x axis")
+			  .attr("transform", "translate(0,"+height+")")
+			  .call(xAxis);
+
+		chart.append("g")
+			  .attr("class", "x axis")
+			  .attr("transform", "translate("+x.rangeBand()+","+height+")")
+			  .call(xAxis1);
+			  
+		chart.append("g")
+			  .attr("class", "y axis")
+			  .attr("transform", "translate(0,0)")
+			  .style("fill", "SpringGreen")
+			  .call(yAxis);
+
+		chart.append("g")
+			  .attr("class", "y axis")
+			  .attr("transform", "translate("+width+",0)")
+			  .style("fill", "steelblue")
+			  .call(yAxisRight);	  
+
+		   chart.selectAll(".bar")
+			  .data(data)
+			.enter().append("rect")
+			  .attr("class", "bar")
+			  .attr("x", function(d) { return x(d.name); })
+			  .attr("y", function(d) { return y(d.value); })
+			  .attr("fill", "lightseagreen")
+			  .attr("height", function(d) { return height - y(d.value); })
+			  .attr("width", x.rangeBand());
+
+		   chart.selectAll(".bar1")
+			  .data(data1)
+			.enter().append("rect")
+			  .attr("class", "bar1")
+			  .attr("x", function(d) { return x(d.name)+x.rangeBand(); })
+			  .attr("y", function(d) { return y(d.value); })
+			  .attr("fill", "lightturquoise")
+			  .attr("height", function(d) { return height - y(d.value); })
+			  .attr("width", x.rangeBand());
+
+			  chart.append("path")        // Add the valueline2 path.
+			  .datum(data2)
+			  .attr("class", "line")
+			  .attr("d", valueline2)
+			  .attr("stroke","SpringGreen")
+			  
+			  chart.append("path")        // Add the valueline2 path.
+			  .datum(data3)
+			  .attr("class", "line")
+			  .attr("d", valueline)
+			  .attr("stroke","steelblue")
+			  
+		//});
+
+		function type(d) {
+		  d.value = +d.value; // coerce to number
+		  return d;
+		}
+
+	</script>
+    </div>
+	
+
+</body>
